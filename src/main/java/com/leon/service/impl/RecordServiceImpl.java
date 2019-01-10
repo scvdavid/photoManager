@@ -1,51 +1,48 @@
-package com.neo.service.impl;
+package com.leon.service.impl;
 
-import com.neo.entity.User;
-import com.neo.repository.UserRepository;
-import com.neo.service.UserService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.leon.entity.Record;
+import com.leon.repository.RecordRepository;
+import com.leon.service.RecordService;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class RecordServiceImpl implements RecordService{
 
     @Autowired
-    private UserRepository userRepository;
+    private RecordRepository recordRepository;
 
     @Override
-    public List<User> getUserList() {
-        return userRepository.findAll();
+    public List<Record> getRecordList() {
+        return recordRepository.findAll();
     }
 
     @Override
-    public User findUserById(long id) {
-        return userRepository.findById(id);
+    public Record findRecordById(long id) {
+        return recordRepository.findById(id);
     }
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public void save(Record record) {
+        recordRepository.save(record);
     }
 
     @Override
-    public void edit(User user) {
-        userRepository.save(user);
+    public void edit(Record record) {
+        recordRepository.save(record);
     }
 
     @Override
     public void delete(long id) {
-        userRepository.deleteById(id);
+        recordRepository.deleteById(id);
     }
     
-    public Page<User> findPaginated(Pageable pageable) {
+    public Page<Record> findPaginated(Pageable pageable) {
 //    	List<User> users = userRepository.findAll();
 //    	
 //    	
@@ -65,7 +62,7 @@ public class UserServiceImpl implements UserService{
 //          = new PageImpl<User>(list, PageRequest.of(currentPage, pageSize), users.size());
 // 
 //        return userPage;
-        return userRepository.findAll(pageable);
+        return recordRepository.findAll(pageable);
     }
 }
 

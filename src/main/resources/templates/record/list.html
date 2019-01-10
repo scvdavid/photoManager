@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>recordList</title>
+    <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.css}"> -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    </link>
+</head>
+
+<body class="container">
+    <br />
+    <h1>用户列表</h1>
+    <br /><br />
+    <div class="with:80%">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>名稱</th>
+                    <th>年代</th>
+                    <th>圖檔</th>
+                    <th>修改</th>
+                    <th>刪除</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="record : ${recordPage.content}">
+                    <th scope="row" th:text="${record.id}">1</th>
+                    <td th:text="${record.recordName}">neo</td>
+                    <td th:text="${record.year}">6</td>
+                    <td>
+                        <a th:href="@{/toEdit(id=${record.id})}">
+                            <img th:src="@{'data:image/jpeg;base64,'+${record.photo1Display}}" />
+                        </a>
+                    </td>
+
+
+                    <td><a th:href="@{/toEdit(id=${record.id})}">edit</a></td>
+                    <td><a th:href="@{/delete(id=${record.id})}">delete</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${recordPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/list(size=${recordPage.size}, page=${pageNumber})}" th:text=${pageNumber} th:class="${pageNumber==recordPage.number + 1} ? active"></a>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-2 control-label">
+            <a href="/toAdd" th:href="@{/toAdd}" class="btn btn-info">add</a>
+        </div>
+
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out" />
+        </form>
+    </div>
+
+</body>
+
+</html>

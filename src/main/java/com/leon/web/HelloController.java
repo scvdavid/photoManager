@@ -1,4 +1,4 @@
-package com.neo.web;
+package com.leon.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
