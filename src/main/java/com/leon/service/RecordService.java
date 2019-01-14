@@ -2,10 +2,13 @@ package com.leon.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.leon.entity.Record;
+import com.leon.entity.RecordForQuery;
 
 public interface RecordService {
 
@@ -21,4 +24,7 @@ public interface RecordService {
 
     public Page<Record> findPaginated(Pageable pageable);
 
+	public Page<Record> findPaginated(Example<Record> example, PageRequest pageable);
+    
+	public List<Record> findByConditon(RecordForQuery record); 
 }

@@ -1,20 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
     <meta charset="UTF-8" />
     <title>recordList</title>
     <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.css}"> -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
     </link>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+
 </head>
 
 <body class="container">
-    <br />
-    <h1>用户列表</h1>
-    <br /><br />
-    <div class="with:80%">
+    <div class="row">
+        <h1>XXX檢索</h1>
+    </div>
+    <div class='row'>
+        <div class="form-group col">
+            <div class="col-sm-2 control-label">
+                <a href="/toAdd" th:href="@{/toAdd}" class="btn btn-info">新增</a>
+                <button class="btn btn-info" data-toggle="modal" data-target="#qryModal">查詢</button>
+            </div>
+
+
+        </div>
+        <div class='col-1' th:if="${#request.isUserInRole('USER')}">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign Out" class="btn btn-light" />
+            </form>
+        </div>
+    </div>
+    <div class="with:80% row">
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -22,8 +45,7 @@
                     <th>名稱</th>
                     <th>年代</th>
                     <th>圖檔</th>
-                    <th>修改</th>
-                    <th>刪除</th>
+                    <th width='30' th:if="${#request.isUserInRole('USER')}">修改刪除</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,25 +60,74 @@
                     </td>
 
 
-                    <td><a th:href="@{/toEdit(id=${record.id})}">edit</a></td>
-                    <td><a th:href="@{/delete(id=${record.id})}">delete</a></td>
+                    <td th:if="${#request.isUserInRole('USER')}">
+                        <a th:href="@{/toEdit(id=${record.id})}">edit</a>
+                        <a th:href="@{/delete(id=${record.id})}">delete</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div th:if="${recordPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{/list(size=${recordPage.size}, page=${pageNumber})}" th:text=${pageNumber} th:class="${pageNumber==recordPage.number + 1} ? active"></a>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-2 control-label">
-            <a href="/toAdd" th:href="@{/toAdd}" class="btn btn-info">add</a>
+    <div class="row">
+        <div th:if="${recordPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/list(size=${recordPage.size}, page=${pageNumber})}" th:text=${pageNumber} th:class="${pageNumber==recordPage.number + 1} ? active"></a>
         </div>
-
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out" />
-        </form>
     </div>
+
+    <div class="modal" id="qryModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" th:action="@{/list}" th:object="${qryVO}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="recordName" class="col-sm-2 control-label">recordName</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{recordName}"  placeholder="recordName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="year" class="col-sm-2 control-label">year</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{year}" placeholder="year" />
+                            </div>
+                        </div>
+                                                <div class="form-group">
+                            <label for="yearB" class="col-sm-2 control-label">year</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{yearB}" placeholder="yearB" />
+                            </div>
+                        </div>
+                                                <div class="form-group">
+                            <label for="yearE" class="col-sm-2 control-label">year</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{yearE}" placeholder="yearE" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                        <button type="submit" class="btn btn-primary">查詢</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 </body>
+<script>
+
+
+
+
+</script>
 
 </html>

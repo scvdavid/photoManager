@@ -3,11 +3,14 @@ package com.leon.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.leon.entity.Record;
+import com.leon.entity.RecordForQuery;
 import com.leon.repository.RecordRepository;
 import com.leon.service.RecordService;
 
@@ -64,6 +67,17 @@ public class RecordServiceImpl implements RecordService{
 //        return userPage;
         return recordRepository.findAll(pageable);
     }
+    
+
+	@Override
+	public Page<Record> findPaginated(Example<Record> example, PageRequest pageable) {
+		return recordRepository.findAll(example, pageable);
+	}
+	
+	@Override
+	public List<Record> findByConditon(RecordForQuery record){
+		return recordRepository.findByCondition(record);
+	}
 }
 
 
