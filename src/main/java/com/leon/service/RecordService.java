@@ -26,5 +26,5 @@ public interface RecordService {
 
 	public Page<Record> findPaginated(Example<Record> example, PageRequest pageable);
     
-	public List<Record> findByConditon(RecordForQuery record); 
+	public Page<Record> findByConditon(RecordForQuery record, PageRequest pageable); 
 }

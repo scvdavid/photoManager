@@ -75,8 +75,8 @@ public class RecordServiceImpl implements RecordService{
 	}
 	
 	@Override
-	public List<Record> findByConditon(RecordForQuery record){
-		return recordRepository.findByCondition(record);
+	public Page<Record> findByConditon(RecordForQuery record, PageRequest pageable){
+		return recordRepository.findByCondition(record, pageable);
 	}
 }
 

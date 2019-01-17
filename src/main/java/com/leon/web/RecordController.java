@@ -34,6 +34,11 @@ public class RecordController {
 	public String index() {
 		return "redirect:/list";
 	}
+	
+	@RequestMapping("/login")
+	public String toLoginPage() {
+		return "login";
+	}
 
 	// no page
 //    @RequestMapping("/list")
@@ -52,7 +57,7 @@ public class RecordController {
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(5);
 
-		Page<Record> recordPage = recordService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+		Page<Record> recordPage = recordService.findByConditon(qryVO, PageRequest.of(currentPage - 1, pageSize));
 
 		model.addAttribute("recordPage", recordPage);
 
